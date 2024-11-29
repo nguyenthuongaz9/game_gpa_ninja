@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=3 uid="uid://cp7t8g44ba1d2"]
+
+[ext_resource type="Script" path="res://Scripts/pick_up_item.gd" id="1_5jxcn"]
+[ext_resource type="Resource" uid="uid://pk4s2kstue36" path="res://Resources/Weapons/Sword/sword_inventory_item.tres" id="2_q0jsi"]
+[ext_resource type="Texture2D" uid="uid://dx4h05ntwakd5" path="res://Assets/Sprites/Items/Weapons/Sword2/SpriteInHand.png" id="3_f2vp8"]
+[ext_resource type="Shape2D" uid="uid://dg8tndjfrwq7m" path="res://Resources/Weapons/Sword/sword_weapon_collision_item_shape.tres" id="4_5fb1a"]
+
+[node name="PickUpItem" type="Area2D"]
+collision_layer = 8
+script = ExtResource("1_5jxcn")
+inventory_item = ExtResource("2_q0jsi")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("3_f2vp8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 0.5)
+shape = ExtResource("4_5fb1a")
