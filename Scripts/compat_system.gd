@@ -8,7 +8,6 @@ class_name CompatSystem
 @onready var right_hand_collision_shape_2d = $RightHandWeaponSprite/Area2D/CollisionShape2D
 @onready var left_hand_weapon_sprite: Sprite2D = $LeftHandWeaponSprite
 @onready var left_hand_collision_shape_2d = $LeftHandWeaponSprite/Area2D/CollisionShape2D
-
 @export var right_weapon:WeaponItem
 @export var left_weapon:WeaponItem
 
@@ -19,20 +18,27 @@ func _ready() -> void:
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("right_hand_action"):
-		if !can_attack:
-			return
-		can_attack = false
-		animated_sprite_2d.play_attack_animation()
-		var attack_direction = animated_sprite_2d.attack_direction
-		if right_weapon == null:
-			return
-		var attack_data = right_weapon.get_data_for_direction(attack_direction)
-		right_hand_weapon_sprite.position = attack_data.get("attachment_position")
-		right_hand_weapon_sprite.rotation_degrees = attack_data.get("rotation")
-		right_hand_weapon_sprite.z_index = attack_data.get("z_index")
-		right_hand_weapon_sprite.show()
+		perform_action(right_weapon, right_hand_weapon_sprite)
 	if event.is_action_pressed("left_hand_action"):
-		animated_sprite_2d.play_attack_animation()
+		perform_action(left_weapon, left_hand_weapon_sprite)
+	
+func perform_action(weapon_item:WeaponItem, sprite: Sprite2D):
+	if !can_attack:
+		return
+	can_attack = false
+	animated_sprite_2d.play_attack_animation()
+	var attack_direction = animated_sprite_2d.attack_direction
+	if weapon_item == null:
+		return
+	var attack_data = weapon_item.get_data_for_direction(attack_direction)
+	if weapon_item.side_in_hand_texture != null && ["left", "right"].has(attack_direction):
+		sprite.texture = weapon_item.side_in_hand_texture
+	else:
+		sprite.texture = weapon_item.in_hand_texture
+	sprite.position = attack_data.get("attachment_position")
+	sprite.rotation_degrees = attack_data.get("rotation")
+	sprite.z_index = attack_data.get("z_index")
+	sprite.show()
 	
 
 
